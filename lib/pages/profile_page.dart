@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'edit_profile_page.dart'; // pastikan ini ada
+import 'edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -15,14 +15,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late String name;
   late String email;
-  String? imagePath; // foto baru
+  String? imagePath;
 
   @override
   void initState() {
     super.initState();
     name = widget.name;
     email = widget.email;
-    imagePath = null; // belum ganti
+    imagePath = null;
   }
 
   @override
@@ -37,7 +37,48 @@ class _ProfilePageState extends State<ProfilePage> {
           "Profile",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
+
+       
+        ///       BUTTON ABOUT
+        
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline, color: Colors.white),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    backgroundColor: const Color(0xFF1A1A27),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    title: const Text(
+                      "About",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    content: const Text(
+                      "Rizal Abdul Ghani_23552011086",
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text(
+                          "OK",
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  );
+                },
+              );
+            },
+          )
+        ],
       ),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -51,14 +92,18 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
             child: Column(
               children: [
+                /// FOTO PROFIL
                 CircleAvatar(
                   radius: 60,
                   backgroundImage: imagePath != null
                       ? FileImage(File(imagePath!))
                       : const AssetImage("assets/images/profile.jpeg")
-                            as ImageProvider,
+                          as ImageProvider,
                 ),
+
                 const SizedBox(height: 16),
+
+                /// CARD PROFIL
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -84,12 +129,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 16,
                         ),
                       ),
+
                       const SizedBox(height: 20),
+
+                      /// EDIT BUTTON
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
-                            // Navigasi ke EditProfilePage
                             final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -100,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                             );
+
                             if (result != null) {
                               setState(() {
                                 name = result['name'];
@@ -127,7 +175,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ),
+
                 const Spacer(),
+
+                /// LOGOUT
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
